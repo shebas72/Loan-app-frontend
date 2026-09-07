@@ -6,6 +6,11 @@ export interface User {
   role: 'applicant' | 'loan_officer' | 'underwriter' | 'branch_manager' | 'admin';
 }
 
+export interface TenantOption {
+  id: string;
+  name: string;
+}
+
 export type LoanStatus =
   | 'draft'
   | 'submitted'
