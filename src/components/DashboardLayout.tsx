@@ -108,7 +108,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </div>
         </header>
 
-        <main className="content">{children}</main>
+        <main className="page-content">{children}</main>
       </div>
     </div>
   );

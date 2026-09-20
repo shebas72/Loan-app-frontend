@@ -53,3 +53,12 @@ export interface AuthResponse {
   user: User;
   token: string;
 }
+
+export interface StatusTransition {
+  id: string;
+  from_status: LoanStatus | null;
+  to_status: LoanStatus;
+  comment: string | null;
+  changed_by: { id: number; name: string };
+  created_at: string;
+}
