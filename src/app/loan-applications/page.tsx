@@ -6,6 +6,8 @@ import { apiClient, ApiError } from '@/lib/api';
 import { LoanApplication, PaginatedResponse } from '@/types';
 import { statusBadgeClass, statusLabel } from '@/lib/loanStatus';
 import { useAuth } from '@/contexts/AuthContext';
+import Link from 'next/link';
+import RequireAuth from '@/components/RequireAuth';
 
 export default function LoanApplicationsPage() {
   const [loans, setLoans] = useState<LoanApplication[]>([]);
@@ -71,6 +73,7 @@ export default function LoanApplicationsPage() {
   }
 
   return (
+    <RequireAuth>
     <DashboardLayout>
       <div className="page-title d-flex justify-content-between align-items-center">
         <h4>Loan Applications</h4>
@@ -146,12 +149,15 @@ export default function LoanApplicationsPage() {
                   <th>Purpose</th>
                   <th>Status</th>
                   <th>Submitted</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {loans.map((loan) => (
                   <tr key={loan.id}>
-                    <td>{loan.applicant.name}</td>
+                    <td>      
+                      <Link href={`/loan-applications/${loan.id}`}>{loan.applicant.name}</Link>
+                      </td>
                     <td>${Number(loan.amount).toLocaleString()}</td>
                     <td>{loan.purpose}</td>
                     <td>
@@ -160,6 +166,11 @@ export default function LoanApplicationsPage() {
                       </span>
                     </td>
                     <td>{new Date(loan.created_at).toLocaleDateString()}</td>
+                    <td>
+                      <Link href={`/loan-applications/${loan.id}`} className="btn btn-sm btn-outline-primary">
+                        View
+                      </Link>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -168,5 +179,6 @@ export default function LoanApplicationsPage() {
         </div>
       </div>
     </DashboardLayout>
+    </RequireAuth>
   );
 }

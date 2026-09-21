@@ -6,6 +6,7 @@ import { apiClient, ApiError } from '@/lib/api';
 import { LoanApplication, StatusTransition, LoanStatus } from '@/types';
 import { statusBadgeClass, statusLabel } from '@/lib/loanStatus';
 import { useAuth } from '@/contexts/AuthContext';
+import RequireAuth from '@/components/RequireAuth';
 
 const nextStatusOptions: Record<LoanStatus, LoanStatus[]> = {
   draft: ['submitted'],
@@ -98,12 +99,16 @@ export default function LoanApplicationDetailPage({
   const canTransition = user?.role !== 'applicant' && availableNextStatuses.length > 0;
 
   return (
+    <RequireAuth>
     <DashboardLayout>
       <div className="page-title d-flex justify-content-between align-items-center">
         <h4>Loan Application Detail</h4>
         <span className={`badge ${statusBadgeClass[loan.status]}`}>
           {statusLabel[loan.status]}
         </span>
+        <button className="btn btn-outline-primary" onClick={() => window.history.back()}>
+          Go Back
+        </button>
       </div>
 
       <div className="card mb-4">
@@ -119,9 +124,13 @@ export default function LoanApplicationDetailPage({
             </div>
           </div>
           <div className="row">
-            <div className="col-12">
+            <div className="col-6">
               <div className="text-muted small">Purpose</div>
               <div>{loan.purpose}</div>
+            </div>
+            <div className="col-6">
+              <div className="text-muted small">Submitted</div>
+              <div>{new Date(loan.created_at).toLocaleDateString()}</div>
             </div>
           </div>
         </div>
@@ -197,5 +206,6 @@ export default function LoanApplicationDetailPage({
         </div>
       </div>
     </DashboardLayout>
+    </RequireAuth>
   );
 }
