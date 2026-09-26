@@ -17,6 +17,7 @@ export type LoanStatus =
   | 'under_review'
   | 'approved'
   | 'rejected'
+  | 'appealed' 
   | 'disbursed';
 
 export interface LoanApplication {
@@ -60,5 +61,16 @@ export interface StatusTransition {
   to_status: LoanStatus;
   comment: string | null;
   changed_by: { id: number; name: string };
+  created_at: string;
+}
+
+export interface Document {
+  id: string;
+  type: string;
+  original_filename: string;
+  mime_type: string;
+  file_size: number;
+  url: string;
+  uploaded_by: { id: number; name: string };
   created_at: string;
 }

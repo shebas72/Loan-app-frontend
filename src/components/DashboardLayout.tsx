@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, ReactNode } from 'react';
+import { FormEvent, ReactNode, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSearch } from '@/contexts/SearchContext';
 
 interface NavItem {
   href: string;
@@ -20,6 +21,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { query, setQuery } = useSearch();
   const router = useRouter();
 
   function handleHamburgerClick() {
@@ -32,6 +34,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   async function handleLogout() {
     await logout();
+  }
+
+  function handleSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (pathname !== '/loan-applications') router.push('/loan-applications');
   }
 
   return (
@@ -76,9 +83,20 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <i className="bi bi-list"></i>
           </button>
 
-          <div className="header-search">
-            <input type="text" placeholder="Search..." className="form-control" />
-          </div>
+          <form className="header-search" role="search" onSubmit={handleSearch}>
+            <input
+              type="search"
+              name="search"
+              placeholder="Search loan applications..."
+              aria-label="Search loan applications"
+              className="form-control"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+            <button type="submit" className="btn btn-primary" aria-label="Search">
+              <i className="bi bi-search" aria-hidden="true"></i>
+            </button>
+          </form>
 
           <div className="header-right">
             <div className="user-profile dropdown">

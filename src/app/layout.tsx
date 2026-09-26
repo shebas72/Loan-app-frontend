@@ -3,6 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import '@/styles/admin.css';
 
 import { AuthProvider } from '@/contexts/AuthContext';
+import { SearchProvider } from '../contexts/SearchContext';
 import BootstrapClient from '@/components/BootstrapClient';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -10,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <AuthProvider>
-          {children}
+          <SearchProvider>{children}</SearchProvider>
           <BootstrapClient />
         </AuthProvider>
       </body>

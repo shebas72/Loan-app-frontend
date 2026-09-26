@@ -51,3 +51,26 @@ export async function apiClient<T>(path: string, options: ApiOptions = {}): Prom
 
   return data as T;
 }
+
+export async function uploadFile<T>(
+  path: string,
+  formData: FormData,
+  token: string | null,
+): Promise<T> {
+  const headers: Record<string, string> = { Accept: 'application/json' };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  const response = await fetch(`${API_URL}${path}`, {
+    method: 'POST',
+    headers,
+    body: formData,
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new ApiError(data.message ?? 'Upload failed', response.status, data.errors);
+  }
+
+  return data as T;
+}

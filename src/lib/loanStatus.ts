@@ -6,6 +6,7 @@ export const statusBadgeClass: Record<LoanStatus, string> = {
   under_review: 'badge-soft-warning',
   approved: 'badge-soft-success',
   rejected: 'badge-soft-danger',
+  appealed: 'badge-soft-warning',
   disbursed: 'badge-soft-success',
 };
 
@@ -15,5 +16,6 @@ export const statusLabel: Record<LoanStatus, string> = {
   under_review: 'Under Review',
   approved: 'Approved',
   rejected: 'Rejected',
+  appealed: 'Appealed',
   disbursed: 'Disbursed',
 };
