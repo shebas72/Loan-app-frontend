@@ -57,6 +57,7 @@ export default function LoanApplicationsPage() {
       loan.applicant.email,
       loan.amount,
       loan.purpose,
+      loan.assignee?.name ?? 'Unassigned',
       statusLabel[loan.status],
       new Date(loan.created_at).toLocaleDateString(),
     ].some((value) => value.toLocaleLowerCase().includes(normalizedSearch)),
@@ -203,6 +204,7 @@ export default function LoanApplicationsPage() {
                       <th>Amount</th>
                       <th>Purpose</th>
                       <th>Status</th>
+                      <th>Assignee</th>
                       <th>Submitted</th>
                       <th>Action</th>
                     </tr>
@@ -210,7 +212,7 @@ export default function LoanApplicationsPage() {
                   <tbody>
                     {visibleLoans.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="p-4 text-center text-muted">
+                        <td colSpan={7} className="p-4 text-center text-muted">
                           No applications match your search.
                         </td>
                       </tr>
@@ -226,6 +228,7 @@ export default function LoanApplicationsPage() {
                             {statusLabel[loan.status]}
                           </span>
                         </td>
+                        <td>{loan.assignee?.name ?? 'Unassigned'}</td>
                         <td>{new Date(loan.created_at).toLocaleDateString()}</td>
                         <td>
                           <Link href={`/loan-applications/${loan.id}`} className="btn btn-sm btn-outline-primary">

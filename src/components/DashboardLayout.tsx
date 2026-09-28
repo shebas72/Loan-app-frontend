@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSearch } from '@/contexts/SearchContext';
+import { ROLE_LABELS } from '@/types';
 
 interface NavItem {
   href: string;
@@ -17,9 +18,9 @@ const navItems: NavItem[] = [
 ];
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const pathname = usePathname();
   const { user, logout } = useAuth();
   const { query, setQuery } = useSearch();
   const router = useRouter();
@@ -70,6 +71,41 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               </Link>
             </div>
           ))}
+          <div className="nav-item">
+            <Link
+              href="/profile"
+              className={`nav-link ${pathname.startsWith('/profile') ? 'active' : ''}`}
+              onClick={() => setMobileOpen(false)}
+            >
+              <i className="bi bi-person-circle"></i>
+              <span>Profile</span>
+            </Link>
+          </div>
+          {user?.role !== 'admin' && (
+           <div className="nav-item">
+            <Link
+              href="/my-bank"
+              className={`nav-link ${pathname.startsWith('/my-bank') ? 'active' : ''}`}
+              onClick={() => setMobileOpen(false)}
+            >
+              <i className="bi bi-bank"></i>
+              <span>My Bank</span>
+            </Link>
+          </div>
+          )}
+
+                    {user?.role === 'bank_admin' && (
+            <div className="nav-item">
+              <Link
+                href="/staff"
+                className={`nav-link ${pathname.startsWith('/staff') ? 'active' : ''}`}
+                onClick={() => setMobileOpen(false)}
+              >
+                <i className="bi bi-people"></i>
+                <span>Staff</span>
+              </Link>
+            </div>
+          )}
         </div>
       </aside>
 
@@ -112,7 +148,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 />
                 <div className="ms-2 d-none d-md-block">
                   <div className="user-name">{user?.name}</div>
-                  <div className="user-role">{user?.role}</div>
+                  <div className="user-role">{user ? ROLE_LABELS[user.role] : ''}</div>
                 </div>
               </a>
               <ul className="dropdown-menu dropdown-menu-end dropdown-menu-custom">
